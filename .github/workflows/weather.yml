@@ -2,13 +2,12 @@ name: Send Weather to Telegram
 
 on:
   schedule:
-    - cron: "0 5 * * *"      # 05:00 UTC = 07:00 по Варшаве
+    - cron: "0 5 * * *"   # 05:00 UTC = 07:00 Europe/Warsaw
   workflow_dispatch:
 
 jobs:
   weather:
     runs-on: ubuntu-latest
-
     steps:
       - name: Install jq
         run: |
@@ -22,7 +21,7 @@ jobs:
           LON: ${{ vars.LON }}
           OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
         run: |
-          # Значения по умолчанию, если Variables не заданы
+          set -e
           LAT=${LAT:-52.2297}
           LON=${LON:-21.0122}
 
@@ -51,6 +50,7 @@ EOF
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
+          set -e
           curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             -d chat_id="${TELEGRAM_CHAT_ID}" \
             -d parse_mode="Markdown" \
