@@ -3,8 +3,7 @@ name: Weather to Telegram
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 5 * * *" # 05:00 UTC = 07:00 Warsaw
-
+    - cron: "0 12 * * *"   # 12:00 UTC = 15:00 Europe/Minsk
 jobs:
   send:
     runs-on: ubuntu-latest
@@ -20,8 +19,8 @@ jobs:
           set -euo pipefail
           sudo apt-get update -y && sudo apt-get install -y jq
 
-          LAT=${LAT:-52.2297}
-          LON=${LON:-21.0122}
+          LAT=${LAT:-53.9023}
+          LON=${LON:-27.5619}
 
           RES=$(curl -s "https://api.openweathermap.org/data/2.5/weather?lat=$LAT&lon=$LON&units=metric&lang=ru&appid=${OWM}")
 
